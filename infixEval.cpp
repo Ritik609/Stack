@@ -1,28 +1,22 @@
-#include <bits/stdc++.h>
-#include<ctype.h>
+#include<bits/stdc++.h>
 using namespace std;
-int calc(int a,int b,char optor){
-    if(optor=='+')
-      return a+b;
-    else if(optor=='-')
-      return a-b;
-    else if(optor=='*')
-      return a*b;
-    else if(optor=='/')
-      return a/b;
+int priority(char c)
+{
+    if(c=='+' or c=='-') return 1;
+    else return 2;
 }
-int precedence(char optor){
-    if(optor=='+')
-      return 1;
-    else if(optor=='-')
-      return 1;
-    else if(optor=='*')
-      return 2;
-    else if(optor=='/')
-      return 2;
+int calc(int var1,int var2,char opr)
+{
+    if(opr=='+') return var1+var2;
+    if(opr=='-') return var1-var2;
+    if(opr=='*') return var1*var2;
+    if(opr=='/') return var1/var2;
+    return 0;
 }
-int main() {
-    string s="2+(5-3*6/2)";
+int main()
+{
+    string s="2 * (5 + 3) / 4";
+
     stack<char>opr;
     stack<int>oprand;
     int n=s.size();
@@ -52,7 +46,7 @@ int main() {
         }
         else if(s[i]=='+' or s[i]=='-' or s[i]=='*' or s[i]=='/')
         {
-            if(opr.size()>0 and opr.top()!='(' and precedence(s[i])<=precedence(opr.top()))
+            while(opr.size()>0 and opr.top()!='(' and priority(opr.top())>=priority(s[i]))
             {
             char oprator=opr.top();
             opr.pop();
@@ -78,6 +72,5 @@ int main() {
             int res=calc(var1,var2,oprator);
             oprand.push(res);
     }
-    std::cout << oprand.top() << std::endl;
-	return 0;
+    cout<<oprand.top();
 }
